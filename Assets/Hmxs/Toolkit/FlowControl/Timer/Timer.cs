@@ -135,7 +135,7 @@ namespace Hmxs.Toolkit
             //     Debug.Log("Can not find TimerUpdater");
             //     return null;
             // }
-            TimerManager.Instance.Add(timer);
+            TimerManager.instance.Add(timer);
             return timer;
         }
         
@@ -143,7 +143,7 @@ namespace Hmxs.Toolkit
         /// 获得某一ID的全部计时器
         /// </summary>
         /// <param name="timerID">计时器ID</param>
-        public static List<Timer> GetById(string timerID) => TimerManager.Instance.Get(timerID);
+        public static List<Timer> GetById(string timerID) => TimerManager.instance.Get(timerID);
         
         /// <summary>
         /// 暂停某一计时器(自动判空)
@@ -171,7 +171,7 @@ namespace Hmxs.Toolkit
         /// <summary>
         /// 清除所有计时器(自动判空)
         /// </summary>
-        public static void Clear() => TimerManager.Instance.ClearAll();
+        public static void Clear() => TimerManager.instance.ClearAll();
 
         #endregion
         

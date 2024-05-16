@@ -59,7 +59,7 @@ namespace Hmxs.Toolkit
         {
             if (Enumerator == null) return;
             IsRunning = true;
-            CoroutineTaskManager.Instance.StartTask(CallWrapper());
+            CoroutineTaskManager.instance.StartTask(CallWrapper());
         }
 
         /// <summary>
