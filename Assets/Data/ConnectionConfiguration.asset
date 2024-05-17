@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ConnectionConfiguration
   m_EditorClassIdentifier: 
   server: 127.0.0.1
-  database: unitytest
+  database: gamesystem
   uid: root
   password: wzh02156514986
