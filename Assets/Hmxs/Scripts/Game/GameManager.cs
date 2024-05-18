@@ -35,9 +35,12 @@ namespace Hmxs.Scripts.Game
         [Title("Info")]
         [ReadOnly] [SerializeField] private Player player;
         [ReadOnly] [SerializeField] private List<Character> characters;
+        [ReadOnly] [SerializeField] private List<Guild> guilds;
 
         private BoolButton _currentButton;
 
+        public List<Guild> GetGuilds() => guilds;
+        public List<Character> GetCharacters() => characters;
         public Player GetPlayer() => player;
 
         private void Start()
@@ -50,6 +53,7 @@ namespace Hmxs.Scripts.Game
         public void InitGame(int playerIndex)
         {
             LoadCharacters();
+            LoadGuild();
             LoadPlayer(playerIndex);
             LoadWindows();
         }
@@ -76,11 +80,25 @@ namespace Hmxs.Scripts.Game
             }).ToList();
         }
 
+        private void LoadGuild()
+        {
+            var guildData = MySqlHelper.ExecuteQueryList("SELECT * FROM gamesystem.guild");
+            guilds = guildData.Select(data =>
+            {
+                var guildID = int.Parse(data[0]);
+                var guildName = data[1];
+                var establishDate = data[2];
+                return new Guild(guildID, guildName, establishDate);
+            }).ToList();
+        }
+
         private void LoadPlayer(int playerIndex)
         {
             var playerData = MySqlHelper.ExecuteQueryList($"SELECT * FROM gamesystem.player WHERE PlayerID = {playerIndex}")[0];
 
             var guildId = playerData[1] == "NULL" ? -1 : int.Parse(playerData[1]);
+            var guild = guilds.Find(g => g.guildID == guildId);
+
             var playerColor = playerData[2] switch
             {
                 "红" => Color.red,
@@ -105,7 +123,7 @@ namespace Hmxs.Scripts.Game
                 let experiencePoints = int.Parse(data[3])
                 let maxHealth = int.Parse(data[4])
                 select new PlayerCharacter(character, playerIndex, characterLevel, experiencePoints, maxHealth)).ToList();
-            player = new Player(playerIndex, guildId, playerColor, username, password, email, registerDate, playerCharacters);
+            player = new Player(playerIndex, playerColor, username, password, email, registerDate, playerCharacters, guild);
         }
 
         private void LoadWindows()
@@ -126,7 +144,7 @@ namespace Hmxs.Scripts.Game
             mainCanvas.alpha = 0;
             while (mainCanvas.alpha < 0.95f)
             {
-                mainCanvas.alpha += Mathf.Lerp(mainCanvas.alpha, 1, Time.deltaTime * transitionSpeed);
+                mainCanvas.alpha = Mathf.Lerp(mainCanvas.alpha, 1, Time.deltaTime * transitionSpeed);
                 yield return null;
             }
             mainCanvas.alpha = 1;
