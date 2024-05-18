@@ -8,15 +8,15 @@ namespace Hmxs.Scripts.Game
     public class Player
     {
         public int playerID;
-        public int? guildID;
+        public int guildID;
         public Color playerColor;
         public string username;
         public string password;
         public string email;
         public string registerDate;
-        public List<Character> characters;
+        public List<PlayerCharacter> playerCharacters;
 
-        public Player(int playerID, int? guildID, Color playerColor, string username, string password, string email, string registerDate, List<Character> characters)
+        public Player(int playerID, int guildID, Color playerColor, string username, string password, string email, string registerDate, List<PlayerCharacter> playerCharacters)
         {
             this.playerID = playerID;
             this.guildID = guildID;
@@ -25,7 +25,7 @@ namespace Hmxs.Scripts.Game
             this.password = password;
             this.email = email;
             this.registerDate = registerDate;
-            this.characters = characters;
+            this.playerCharacters = playerCharacters;
         }
     }
 }

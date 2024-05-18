@@ -9,6 +9,19 @@ namespace Hmxs.Scripts.UI
 {
     public class UiManager : MonoBehaviour
     {
+        #region Singleton
+
+        public static UiManager instance { get; private set; }
+
+        private void Awake()
+        {
+            if (instance == null)
+                instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        #endregion
+
         [Title("Panel")]
         [SerializeField] private float transitionSpeed;
         [Required] [SerializeField] private CanvasGroup publicCanvas;
@@ -37,22 +50,9 @@ namespace Hmxs.Scripts.UI
 
         private CanvasGroup _currentCanvas;
 
-        #region Singleton
-
-        public static UiManager instance { get; private set; }
-
-        private void Awake()
-        {
-            if (instance == null)
-                instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-
-        #endregion
-
         private void Start()
         {
-            _currentCanvas = mainCanvas;
+            InitUI();
 
             loginButton.onClick.AddListener(() => StartCoroutine(ChangePanel(loginCanvas)));
             registerButton.onClick.AddListener(() => StartCoroutine(ChangePanel(registerCanvas)));
@@ -65,20 +65,48 @@ namespace Hmxs.Scripts.UI
             registerSubmit.onClick.AddListener(Register);
         }
 
+        private void InitUI()
+        {
+            _currentCanvas = mainCanvas;
+            StartCoroutine(InitCanvas());
+        }
+
+        private IEnumerator InitCanvas()
+        {
+            _currentCanvas.gameObject.SetActive(true);
+            publicCanvas.gameObject.SetActive(true);
+            _currentCanvas.alpha = 0;
+            publicCanvas.alpha = 0;
+            _currentCanvas.interactable = false;
+            var lerpValue = 0f;
+            while (lerpValue < 0.95f)
+            {
+                lerpValue = Mathf.Lerp(lerpValue, 1, Time.deltaTime * transitionSpeed);
+                mainCanvas.alpha = lerpValue;
+                publicCanvas.alpha = lerpValue;
+                yield return null;
+            }
+            mainCanvas.alpha = 1;
+            publicCanvas.alpha = 1;
+            _currentCanvas.interactable = true;
+        }
+
         private IEnumerator ChangePanel(CanvasGroup panel)
         {
             _currentCanvas.interactable = false;
-            while (_currentCanvas.alpha > 0.1f)
+            while (_currentCanvas.alpha > 0.05f)
             {
                 _currentCanvas.alpha = Mathf.Lerp(_currentCanvas.alpha, 0, Time.deltaTime * transitionSpeed);
                 yield return null;
             }
+
             _currentCanvas.alpha = 0;
             _currentCanvas.gameObject.SetActive(false);
 
+
             panel.gameObject.SetActive(true);
             panel.alpha = 0;
-            while (panel.alpha < 0.9f)
+            while (panel.alpha < 0.95f)
             {
                 panel.alpha = Mathf.Lerp(panel.alpha, 1, Time.deltaTime * transitionSpeed);
                 yield return null;
@@ -106,7 +134,7 @@ namespace Hmxs.Scripts.UI
                 return;
             }
 
-            var result = MySqlHelper.ExecuteQueryList($"SELECT Password FROM player WHERE Username = '{username}'");
+            var result = MySqlHelper.ExecuteQueryList($"SELECT Password FROM gamesystem.player WHERE Username = '{username}'");
             if (result.Count == 0)
             {
                 ShowInfo("Username not found", Color.red);
@@ -120,9 +148,7 @@ namespace Hmxs.Scripts.UI
             }
             ShowInfo("Login successful", Color.green);
 
-            StartCoroutine(CloseCanvas());
-            var playerIndex = MySqlHelper.ExecuteQueryList($"SELECT PlayerID FROM player WHERE Username = '{username}'")[0][0];
-            GameManager.instance.InitGame(int.Parse(playerIndex));
+            StartCoroutine(InitGame(username));
         }
 
         private void Register()
@@ -146,7 +172,7 @@ namespace Hmxs.Scripts.UI
                 return;
             }
 
-            var result = MySqlHelper.ExecuteQueryList($"SELECT * FROM player WHERE Username = '{username}'");
+            var result = MySqlHelper.ExecuteQueryList($"SELECT * FROM gamesystem.player WHERE Username = '{username}'");
             if (result.Count != 0)
             {
                 ShowInfo("Username already exists", Color.red);
@@ -155,16 +181,14 @@ namespace Hmxs.Scripts.UI
             MySqlHelper.ExecuteNonQuery($"INSERT INTO player (Username, Email, Password, RegistrationDate) VALUES ('{username}', '{email}', '{password}', CURRENT_DATE)");
             ShowInfo("Register successful", Color.green);
 
-            StartCoroutine(CloseCanvas());
-            var playerIndex = MySqlHelper.ExecuteQueryList($"SELECT PlayerID FROM player WHERE Username = '{username}'")[0][0];
-            GameManager.instance.InitGame(int.Parse(playerIndex));
+            StartCoroutine(InitGame(username));
         }
 
-        private IEnumerator CloseCanvas()
+        private IEnumerator InitGame(string username)
         {
             _currentCanvas.interactable = false;
             var lerpValue = 1f;
-            while (lerpValue > 0.1f)
+            while (lerpValue > 0.05f)
             {
                 lerpValue = Mathf.Lerp(lerpValue, 0, Time.deltaTime * transitionSpeed);
                 _currentCanvas.alpha = lerpValue;
@@ -175,6 +199,9 @@ namespace Hmxs.Scripts.UI
             publicCanvas.alpha = 0;
             _currentCanvas.gameObject.SetActive(false);
             publicCanvas.gameObject.SetActive(false);
+
+            var playerIndex = MySqlHelper.ExecuteQueryList($"SELECT PlayerID FROM gamesystem.player WHERE Username = '{username}'")[0][0];
+            GameManager.instance.InitGame(int.Parse(playerIndex));
         }
     }
 }

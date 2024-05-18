@@ -16,26 +16,17 @@ namespace Hmxs.Scripts.Game
     [Serializable]
     public class Character
     {
-        [Title("Base Info")]
+        public int characterID;
         public string characterName;
         public CharacterAttribute characterAttribute;
         public int characterBaseHp;
 
-        [Title("Character Info")]
-        public Player owner;
-        public int characterLevel;
-        public int characterExp;
-        public int characterMaxHp;
-
-        public Character(string characterName, CharacterAttribute characterAttribute, int characterBaseHp, Player owner, int characterLevel, int characterExp, int characterMaxHp)
+        public Character(int characterID, string characterName, CharacterAttribute characterAttribute, int characterBaseHp)
         {
+            this.characterID = characterID;
             this.characterName = characterName;
             this.characterAttribute = characterAttribute;
             this.characterBaseHp = characterBaseHp;
-            this.owner = owner;
-            this.characterLevel = characterLevel;
-            this.characterExp = characterExp;
-            this.characterMaxHp = characterMaxHp;
         }
     }
 }

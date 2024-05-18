@@ -21,7 +21,7 @@ namespace Hmxs.Scripts.UI
 
         private void Update()
         {
-            if (infoCanvas.alpha > 0.1)
+            if (infoCanvas.alpha > 0.05)
                 infoCanvas.alpha -= Time.deltaTime * fadeSpeed;
             else
             {

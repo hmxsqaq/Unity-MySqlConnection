@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Hmxs.Scripts.MySQL;
+using Hmxs.Scripts.UI;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -20,21 +23,64 @@ namespace Hmxs.Scripts.Game
 
         #endregion
 
+        [Title("Panel")]
+        [SerializeField] private float transitionSpeed;
+        [Required] [SerializeField] private CanvasGroup mainCanvas;
+
+        [Title("Button")]
+        [Required] [SerializeField] private BoolButton playerButton;
+        [Required] [SerializeField] private BoolButton characterButton;
+        [Required] [SerializeField] private BoolButton guildButton;
+
+        [Title("Info")]
         [ReadOnly] [SerializeField] private Player player;
+        [ReadOnly] [SerializeField] private List<Character> characters;
+
+        private BoolButton _currentButton;
 
         public Player GetPlayer() => player;
 
+        private void Start()
+        {
+            playerButton.GetButton().onClick.AddListener(() => ChangeWindow(playerButton));
+            characterButton.GetButton().onClick.AddListener(() => ChangeWindow(characterButton));
+            guildButton.GetButton().onClick.AddListener(() => ChangeWindow(guildButton));
+        }
+
         public void InitGame(int playerIndex)
         {
-            Debug.Log($"Game start with player index: {playerIndex}");
+            LoadCharacters();
             LoadPlayer(playerIndex);
+            LoadWindows();
+        }
+
+        private void LoadCharacters()
+        {
+            var characterData = MySqlHelper.ExecuteQueryList("SELECT * FROM gamesystem.gamecharacter");
+            characters = characterData.Select(data =>
+            {
+                var characterID = int.Parse(data[0]);
+                var characterName = data[1];
+                var characterAttribute = data[2] switch
+                {
+                    "木" => CharacterAttribute.木,
+                    "水" => CharacterAttribute.水,
+                    "火" => CharacterAttribute.火,
+                    "土" => CharacterAttribute.土,
+                    "雷" => CharacterAttribute.雷,
+                    "光" => CharacterAttribute.光,
+                    _ => CharacterAttribute.木
+                };
+                var characterBaseHp = int.Parse(data[3]);
+                return new Character(characterID, characterName, characterAttribute, characterBaseHp);
+            }).ToList();
         }
 
         private void LoadPlayer(int playerIndex)
         {
-            var playerData = MySqlHelper.ExecuteQueryList($"SELECT * FROM player WHERE PlayerID = {playerIndex}")[0];
+            var playerData = MySqlHelper.ExecuteQueryList($"SELECT * FROM gamesystem.player WHERE PlayerID = {playerIndex}")[0];
 
-            var guildId = playerData[1] == "NULL" ? (int?)null : int.Parse(playerData[1]);
+            var guildId = playerData[1] == "NULL" ? -1 : int.Parse(playerData[1]);
             var playerColor = playerData[2] switch
             {
                 "红" => Color.red,
@@ -49,29 +95,49 @@ namespace Hmxs.Scripts.Game
             var password = playerData[4];
             var email = playerData[5];
             var registerDate = playerData[6];
-            var characterList = MySqlHelper.ExecuteQueryList($"SELECT * FROM playercharacter WHERE PlayerID = {playerIndex}");
-            var characters = new List<Character>();
-            // foreach (var characterData in characterList)
-            // {
-            //     var characterName = characterData[1];
-            //     var characterAttribute = characterData[2] switch
-            //     {
-            //         "木" => CharacterAttribute.木,
-            //         "水" => CharacterAttribute.水,
-            //         "火" => CharacterAttribute.火,
-            //         "土" => CharacterAttribute.土,
-            //         "雷" => CharacterAttribute.雷,
-            //         "光" => CharacterAttribute.光,
-            //         _ => CharacterAttribute.木
-            //     };
-            //     var characterBaseHp = int.Parse(characterData[3]);
-            //     var characterLevel = int.Parse(characterData[4]);
-            //     var characterExp = int.Parse(characterData[5]);
-            //     var characterMaxHp = int.Parse(characterData[6]);
-            //     characters.Add(new Character(characterName, characterAttribute, characterBaseHp, player, characterLevel, characterExp, characterMaxHp));
-            // }
 
-            player = new Player(playerIndex, guildId, playerColor, username, password, email, registerDate, characters);
+            var playerCharacterData = MySqlHelper.ExecuteQueryList(
+                $"SELECT pc.* FROM player p JOIN playercharacter pc ON p.PlayerID = pc.PlayerID WHERE p.PlayerID = {playerIndex}");
+            var playerCharacters = (from data in playerCharacterData
+                let characterID = int.Parse(data[1])
+                let character = characters.Find(c => c.characterID == characterID)
+                let characterLevel = int.Parse(data[2])
+                let experiencePoints = int.Parse(data[3])
+                let maxHealth = int.Parse(data[4])
+                select new PlayerCharacter(character, playerIndex, characterLevel, experiencePoints, maxHealth)).ToList();
+            player = new Player(playerIndex, guildId, playerColor, username, password, email, registerDate, playerCharacters);
+        }
+
+        private void LoadWindows()
+        {
+            _currentButton = playerButton;
+
+            playerButton.SetButton(false);
+            characterButton.SetButton(true);
+            guildButton.SetButton(true);
+
+            StartCoroutine(LoadWindowsCoroutine());
+        }
+
+        private IEnumerator LoadWindowsCoroutine()
+        {
+            mainCanvas.gameObject.SetActive(true);
+            mainCanvas.interactable = false;
+            mainCanvas.alpha = 0;
+            while (mainCanvas.alpha < 0.95f)
+            {
+                mainCanvas.alpha += Mathf.Lerp(mainCanvas.alpha, 1, Time.deltaTime * transitionSpeed);
+                yield return null;
+            }
+            mainCanvas.alpha = 1;
+            mainCanvas.interactable = true;
+        }
+
+        private void ChangeWindow(BoolButton target)
+        {
+            _currentButton.SetButton(true);
+            target.SetButton(false);
+            _currentButton = target;
         }
     }
 }
