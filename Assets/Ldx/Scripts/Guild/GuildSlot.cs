@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Ldx.Scripts
+namespace Ldx.Scripts.Guild
 {
     [Serializable]
     public struct GuildInformation

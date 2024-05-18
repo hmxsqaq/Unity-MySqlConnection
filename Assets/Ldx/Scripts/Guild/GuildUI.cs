@@ -3,7 +3,7 @@ using Hmxs.Scripts.MySQL;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Ldx.Scripts
+namespace Ldx.Scripts.Guild
 {
     public class GuildUI : MonoBehaviour
     {
@@ -29,7 +29,10 @@ namespace Ldx.Scripts
             {
                 var obj = Instantiate(guildSlot,guildSlotParent) as GameObject;
                 var slot = obj.GetComponent<GuildSlot>();
-                slot?.InitSlot(line,this);
+                if (slot)
+                {
+                    slot.InitSlot(line,this);
+                }
             }
             
             guildDetail.gameObject.SetActive(false);

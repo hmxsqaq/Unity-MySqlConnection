@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Ldx.Scripts
+namespace Ldx.Scripts.Guild
 {
     public class GuildInfo : MonoBehaviour
     {
