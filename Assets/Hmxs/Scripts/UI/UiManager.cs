@@ -122,7 +122,7 @@ namespace Hmxs.Scripts.UI
 
             StartCoroutine(CloseCanvas());
             var playerIndex = MySqlHelper.ExecuteQueryList($"SELECT PlayerID FROM player WHERE Username = '{username}'")[0][0];
-            GameManager.instance.GameStart(int.Parse(playerIndex));
+            GameManager.instance.InitGame(int.Parse(playerIndex));
         }
 
         private void Register()
@@ -157,7 +157,7 @@ namespace Hmxs.Scripts.UI
 
             StartCoroutine(CloseCanvas());
             var playerIndex = MySqlHelper.ExecuteQueryList($"SELECT PlayerID FROM player WHERE Username = '{username}'")[0][0];
-            GameManager.instance.GameStart(int.Parse(playerIndex));
+            GameManager.instance.InitGame(int.Parse(playerIndex));
         }
 
         private IEnumerator CloseCanvas()

@@ -2282,7 +2282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &682734691
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2919,13 +2919,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87041de9d0a346b6ac2eeebb768ad676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player:
+  player:
     playerID: 0
     playerColor: {r: 0, g: 0, b: 0, a: 0}
     username: 
     password: 
     email: 
     registerDate: 
+    characters: []
 --- !u!4 &1076248426
 Transform:
   m_ObjectHideFlags: 0
@@ -4249,7 +4250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1826813510
 RectTransform:
   m_ObjectHideFlags: 0

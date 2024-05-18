@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Hmxs.Scripts.Game
@@ -13,8 +14,9 @@ namespace Hmxs.Scripts.Game
         public string password;
         public string email;
         public string registerDate;
+        public List<Character> characters;
 
-        public Player(int playerID, int? guildID, Color playerColor, string username, string password, string email, string registerDate)
+        public Player(int playerID, int? guildID, Color playerColor, string username, string password, string email, string registerDate, List<Character> characters)
         {
             this.playerID = playerID;
             this.guildID = guildID;
@@ -23,6 +25,7 @@ namespace Hmxs.Scripts.Game
             this.password = password;
             this.email = email;
             this.registerDate = registerDate;
+            this.characters = characters;
         }
     }
 }
