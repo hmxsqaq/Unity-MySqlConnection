@@ -30,7 +30,6 @@ namespace Ldx.Scripts
                 var obj = Instantiate(guildSlot,guildSlotParent) as GameObject;
                 var slot = obj.GetComponent<GuildSlot>();
                 slot?.InitSlot(line,this);
-                Debug.Log("next line");
             }
             
             guildDetail.gameObject.SetActive(false);
