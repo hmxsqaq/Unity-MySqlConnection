@@ -11,9 +11,9 @@ namespace Ldx.Scripts.Guild
         [SerializeField] private Text guildPopulation;
         [SerializeField] private Text guildDetail;
 
-        public void Init(GuildInformation information)
+        public void Init(GuildInformation information,Sprite sprite)
         {
-            m_Image.color = information.color;
+            m_Image.sprite = sprite;
             guildId.text = "工会ID：" + information.guildID;
             guildName.text = "工会名称："+information.guildName;
             guildPopulation.text = "工会人数："+information.guildMemberNum;

@@ -14,13 +14,15 @@ namespace Ldx.Scripts.Character
         [SerializeField] private Transform characterSlotParent;
         [SerializeField] private GameObject characterSlot;
         [SerializeField] private CharacterInfo characterDetail;
+
+        [SerializeField] private Sprite[] characterSprites;
         
         private void Start()
         {
-            InitialGuild();
+            InitialCharacters();
         }
 
-        private void InitialGuild()
+        private void InitialCharacters()
         {
             var characters = GameManager.instance.GetPlayer().playerCharacters;
             
@@ -30,17 +32,18 @@ namespace Ldx.Scripts.Character
                 var slot = obj.GetComponent<CharacterSlot>();
                 if (slot)
                 {
-                    slot.InitSlot(character,this);
+                    Sprite sp = characterSprites[character.character.characterID-1];
+                    slot.InitSlot(character,sp,this);
                 }
             }
             
             characterDetail.gameObject.SetActive(false);
         }
         
-        public void ShowDetail(ref PlayerCharacter information)
+        public void ShowDetail(ref PlayerCharacter information,Sprite sprite)
         {
             characterDetail.gameObject.SetActive(true);
-            characterDetail.Init(information);
+            characterDetail.Init(information,sprite);
         }
     }
 }

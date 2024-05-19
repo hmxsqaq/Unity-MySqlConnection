@@ -229,11 +229,23 @@ MonoBehaviour:
   guildSprite: {fileID: 3165163457373879333}
   guildName: {fileID: 7542732857897428780}
   guildButton: {fileID: 249615793990217845}
-  m_guildID: 0
-  m_guildName: 
-  m_establishedDate: 
-  m_guildMemberNum: 0
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  guildInfo:
+    guildID: 0
+    guildName: 
+    establishedDate: 
+    guildMemberNum: 0
+    guildSprite: {fileID: 0}
+  guildSprites:
+  - {fileID: 352741282, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+  - {fileID: 1895984187, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+  - {fileID: -1090918098, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+  - {fileID: -311044646, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+  - {fileID: -1786402008, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+  - {fileID: 1733550939, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+  - {fileID: -1307148210, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+  - {fileID: 546434071, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+  - {fileID: 840942801, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+  - {fileID: -54573670, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
 --- !u!1 &6289865041411633663
 GameObject:
   m_ObjectHideFlags: 0

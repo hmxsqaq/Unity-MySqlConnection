@@ -11,6 +11,7 @@ namespace Ldx.Scripts.Guild
         [SerializeField] private Transform guildSlotParent;
         [SerializeField] private GameObject guildSlot;
         [SerializeField] private GuildInfo guildDetail;
+        
         private List<GuildSlot> m_GuildsInfo = new();
 
         //查询工会所有信息以及工会人数
@@ -38,10 +39,10 @@ namespace Ldx.Scripts.Guild
             guildDetail.gameObject.SetActive(false);
         }
         
-        public void ShowDetail(ref GuildInformation information)
+        public void ShowDetail(ref GuildInformation information,Sprite sprite)
         {
             guildDetail.gameObject.SetActive(true);
-            guildDetail.Init(information);
+            guildDetail.Init(information,sprite);
         }
     }
 }

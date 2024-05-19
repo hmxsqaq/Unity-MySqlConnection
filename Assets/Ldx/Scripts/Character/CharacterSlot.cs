@@ -22,14 +22,14 @@ namespace Ldx.Scripts.Character
 
         [Title("工会信息")]
         [SerializeField] private PlayerCharacter characterInfo;
-        
-        public void InitSlot(PlayerCharacter character,CharacterUI controller)
+            
+        public void InitSlot(PlayerCharacter character,Sprite sprite,CharacterUI controller)
         {
             characterInfo = character;
-            //characterSprite.color;
+            characterSprite.sprite = sprite;
             characterName.text = character.character.characterName;
             
-            characterButton.onClick.AddListener(()=>controller.ShowDetail(ref characterInfo));
+            characterButton.onClick.AddListener(()=>controller.ShowDetail(ref characterInfo,sprite));
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,20 +14,11 @@ namespace Ldx.Scripts.Guild
         public string guildName;
         public string establishedDate;
         public int guildMemberNum;
-        public Color color;
-
-        public GuildInformation(List<string> info)
+        public Sprite guildSprite;
+        public GuildInformation(List<string> info,Sprite sprite)
         {
             guildID = int.Parse(info[0]);
-            color = info[0] switch
-            {
-                "1" => Color.red,
-                "2" => Color.blue,
-                "3" => Color.cyan,
-                "4" => Color.yellow,
-                "5" => Color.magenta,
-                _ => Color.white
-            };
+            guildSprite = sprite;
             guildName = info[1];
             establishedDate = info[2];
             guildMemberNum = int.Parse(info[3]);
@@ -42,15 +34,18 @@ namespace Ldx.Scripts.Guild
 
         [Title("工会信息")]
         [SerializeField] private GuildInformation guildInfo;
+
+        [Title("工会图片")] 
+        [SerializeField] private Sprite[] guildSprites;
         
         public void InitSlot(List<string> info,GuildUI controller)// ,Sprite sprite,string name)
         {
-            guildInfo = new GuildInformation(info);
+            guildInfo = new GuildInformation(info,guildSprites[int.Parse(info[0])]);
                 
-            guildSprite.color = guildInfo.color;
+            guildSprite.sprite = guildInfo.guildSprite;
             guildName.text = guildInfo.guildName;
             
-            guildButton.onClick.AddListener(()=>controller.ShowDetail(ref guildInfo));
+            guildButton.onClick.AddListener(()=>controller.ShowDetail(ref guildInfo,guildInfo.guildSprite));
         }
     }
 }

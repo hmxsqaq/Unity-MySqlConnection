@@ -14,9 +14,9 @@ namespace Ldx.Scripts.Character
         [SerializeField] private Text characterExperience;
         [SerializeField] private Text characterMaxHealth;
 
-        public void Init(PlayerCharacter information)
+        public void Init(PlayerCharacter information,Sprite sprite)
         {
-            //m_Image.color = information.color;
+            m_Image.sprite = sprite;
             characterId.text = "角色ID：" + information.character.characterID;
             characterName.text = "角色名称："+information.character.characterName;
             characterAttribute.text = "角色属性：" + information.character.characterAttribute;
