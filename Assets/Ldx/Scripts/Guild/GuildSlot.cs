@@ -33,7 +33,7 @@ namespace Ldx.Scripts.Guild
         [SerializeField]private Button guildButton;
 
         [Title("工会信息")]
-        [SerializeField] private GuildInformation guildInfo;
+        public GuildInformation guildInfo;
 
         [Title("工会图片")] 
         [SerializeField] private Sprite[] guildSprites;

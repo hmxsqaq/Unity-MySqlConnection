@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Hmxs.Scripts.Game;
 using Hmxs.Scripts.MySQL;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -18,25 +19,33 @@ namespace Ldx.Scripts.Guild
         private string query = 
             "select g.guildid,g.guildname,g.establisheddate,count(p.playerid) from guild g,player p where g.guildid = p.guildid group by p.guildid;";
         
-        private void Start()
+        private void OnEnable()
         {
             InitialGuild();
         }
 
         public void InitialGuild()
         {
-            List<List<string>> res = MySqlHelper.ExecuteQueryList(query);
-            foreach (var line in res)
+            List<List<string>> res1 = MySqlHelper.ExecuteQueryList(query);
+            foreach (var line in res1)
             {
                 var obj = Instantiate(guildSlot,guildSlotParent) as GameObject;
                 var slot = obj.GetComponent<GuildSlot>();
                 if (slot)
                 {
                     slot.InitSlot(line,this);
+                    m_GuildsInfo.Add(slot);
                 }
             }
-            
-            guildDetail.gameObject.SetActive(false);
+
+            int guildid = GameManager.instance.GetPlayer().guild.guildID;
+            foreach (var slot in m_GuildsInfo)
+            {
+                if (slot.guildInfo.guildID == guildid)
+                {
+                    ShowDetail(ref slot.guildInfo,slot.guildInfo.guildSprite);
+                }
+            }
         }
         
         public void ShowDetail(ref GuildInformation information,Sprite sprite)

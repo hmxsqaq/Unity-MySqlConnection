@@ -3856,7 +3856,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 10
+  m_CharacterLimit: 18
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -5542,7 +5542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb1461930ea40ee9a699653f23746b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionConfiguration: {fileID: 11400000, guid: c89364b39b01efe4c816355ab1aeacb9, type: 2}
+  connectionConfiguration: {fileID: 11400000, guid: 63d8a7094402e7044a5e6310f02e60a9, type: 2}
 --- !u!4 &1223411867
 Transform:
   m_ObjectHideFlags: 0
