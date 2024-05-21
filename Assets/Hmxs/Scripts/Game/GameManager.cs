@@ -96,7 +96,7 @@ namespace Hmxs.Scripts.Game
         {
             var playerData = MySqlHelper.ExecuteQueryList($"SELECT * FROM gamesystem.player WHERE PlayerID = {playerIndex}")[0];
 
-            var guildId = playerData[1] == "NULL" ? -1 : int.Parse(playerData[1]);
+            if (!int.TryParse(playerData[1], out var guildId)) guildId = -1;
             var guild = guilds.Find(g => g.guildID == guildId);
 
             var playerColor = playerData[2] switch

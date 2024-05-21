@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Hmxs.Scripts.Game;
 using Hmxs.Scripts.MySQL;
 using Sirenix.OdinInspector;
@@ -38,14 +39,10 @@ namespace Ldx.Scripts.Guild
                 }
             }
 
-            int guildid = GameManager.instance.GetPlayer().guild.guildID;
-            foreach (var slot in m_GuildsInfo)
-            {
-                if (slot.guildInfo.guildID == guildid)
-                {
-                    ShowDetail(ref slot.guildInfo,slot.guildInfo.guildSprite);
-                }
-            }
+            if (GameManager.instance.GetPlayer().guild == null) return;
+            var guildId = GameManager.instance.GetPlayer().guild.guildID;
+            foreach (var slot in m_GuildsInfo.Where(slot => slot.guildInfo.guildID == guildId))
+                ShowDetail(ref slot.guildInfo, slot.guildInfo.guildSprite);
         }
         
         public void ShowDetail(ref GuildInformation information,Sprite sprite)

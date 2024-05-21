@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 4183792283354506510}
   - component: {fileID: 249615793990217845}
   - component: {fileID: 5158489109141857790}
+  - component: {fileID: 3800953113362637593}
   m_Layer: 0
   m_Name: GuildSlot
   m_TagString: Untagged
@@ -246,6 +247,21 @@ MonoBehaviour:
   - {fileID: 546434071, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
   - {fileID: 840942801, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
   - {fileID: -54573670, guid: 96d8bc727c448894db7b74ac7d24d8d9, type: 3}
+--- !u!114 &3800953113362637593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3473621534007114887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0442daa258ec423580c9587a5a3990bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxScale: 1.1
+  minScale: 0.9
+  scalingSpeed: 0.15
 --- !u!1 &6289865041411633663
 GameObject:
   m_ObjectHideFlags: 0
